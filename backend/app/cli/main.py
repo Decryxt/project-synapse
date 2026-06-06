@@ -1,5 +1,10 @@
 from rich.console import Console
 
+from app.cli.registry import CommandRegistry
+from app.cli.commands.exit import exit_command
+from app.cli.commands.help import help_command
+from app.cli.commands.status import status_command
+
 console = Console()
 
 
@@ -13,39 +18,25 @@ def banner():
     console.print("")
 
 
+def build_registry():
+    registry = CommandRegistry()
+
+    registry.register("help", help_command(registry))
+    registry.register("status", status_command)
+    registry.register("exit", exit_command)
+
+    return registry
+
+
 def main():
     banner()
+    registry = build_registry()
 
-    while True:
-        command = input("SYNAPSE://> ").strip().lower()
+    running = True
 
-        if command == "help":
-            console.print("")
-            console.print("Available Commands")
-            console.print("------------------")
-            console.print("help")
-            console.print("status")
-            console.print("exit")
-            console.print("")
-
-        elif command == "status":
-            console.print("")
-            console.print("SYSTEM STATUS")
-            console.print("------------------")
-            console.print("Version: 0.1")
-            console.print("Status: ONLINE")
-            console.print("")
-
-        elif command == "exit":
-            console.print("")
-            console.print("Shutting down Synapse...")
-            break
-
-        elif command == "":
-            continue
-
-        else:
-            console.print(f"Unknown command: {command}")
+    while running:
+        command = input("SYNAPSE://> ")
+        running = registry.execute(command)
 
 
 if __name__ == "__main__":
