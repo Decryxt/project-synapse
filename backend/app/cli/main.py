@@ -7,7 +7,7 @@ from app.cli.commands.observations import observations_command
 from app.cli.commands.status import status_command
 from app.cli.registry import CommandRegistry
 from app.engines.observation.engine import ObservationEngine
-from app.engines.observation.storage import InMemoryObservationStore
+from app.engines.observation.json_storage import JsonObservationStore
 
 console = Console()
 
@@ -25,7 +25,7 @@ def banner():
 def build_registry():
     registry = CommandRegistry()
 
-    observation_store = InMemoryObservationStore()
+    observation_store = JsonObservationStore()
     observation_engine = ObservationEngine(observation_store)
 
     registry.register("help", help_command(registry))

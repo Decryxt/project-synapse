@@ -18,7 +18,13 @@ def observations_command(observation_engine):
         console.print("------------------")
 
         for observation in observations:
-            console.print(f"#{observation.id} {observation.content}")
+            console.print(f"#{observation.id}")
+            console.print(f"Content: {observation.content}")
+            console.print(f"Source: {observation.source}")
+            console.print(f"Category: {observation.category}")
+            console.print(f"Importance: {observation.importance}")
+            console.print(f"Created: {observation.created_at}")
+            console.print("------------------")
 
         console.print("")
         return True

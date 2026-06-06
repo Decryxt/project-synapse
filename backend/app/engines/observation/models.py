@@ -6,4 +6,7 @@ from datetime import datetime
 class Observation:
     id: int
     content: str
+    source: str
+    category: str
+    importance: int
     created_at: datetime
