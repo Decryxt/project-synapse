@@ -1,9 +1,13 @@
 from rich.console import Console
 
-from app.cli.registry import CommandRegistry
 from app.cli.commands.exit import exit_command
 from app.cli.commands.help import help_command
+from app.cli.commands.observe import observe_command
+from app.cli.commands.observations import observations_command
 from app.cli.commands.status import status_command
+from app.cli.registry import CommandRegistry
+from app.engines.observation.engine import ObservationEngine
+from app.engines.observation.storage import InMemoryObservationStore
 
 console = Console()
 
@@ -21,8 +25,13 @@ def banner():
 def build_registry():
     registry = CommandRegistry()
 
+    observation_store = InMemoryObservationStore()
+    observation_engine = ObservationEngine(observation_store)
+
     registry.register("help", help_command(registry))
     registry.register("status", status_command)
+    registry.register("observe", observe_command(observation_engine))
+    registry.register("observations", observations_command(observation_engine))
     registry.register("exit", exit_command)
 
     return registry
